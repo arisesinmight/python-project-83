@@ -9,3 +9,5 @@ lint:
 	poetry run flake8 page_analyzer
 pytest:
 	poetry run pytest
+build:
+	./build.sh
