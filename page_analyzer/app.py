@@ -16,6 +16,7 @@ from flask import (
 
 import validators
 
+from urllib.parse import urlparse
 
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -36,15 +37,19 @@ def index():
 @app.post('/urls')
 def url_post():
     input_data = request.form.to_dict()
-    if validators.url(input_data) is not True:
+    if validators.url(input_data['url']) is not True:
         message = 'Некорректный URL'
         return render_template(
             'index.html',
             input_data=input_data,
             message=message
             ), 422
+    #номализуем урл
+    #подключаемся к базе
+    #сохраняем урл в базе
+    #id = находим айди
     flash('Страница успешно добавлена')
-    return redirect(url_for('show_url'), code=302)
+    return redirect(url_for('show_url', id=id), code=302)
 
 
 @app.route('/urls')
@@ -54,11 +59,10 @@ def urls_get():
     )
 
 
-@app.route('/urls/<id>')
-def show_url():
+@app.route('/urls/1') #айди 1 так как нет пока модели
+def show_url(id):
     #подключаемся к базе
-    #находим пользователя по айди
-    user = ''
+    user = '' #находим пользователя по айди
     return render_template(
         'show.html',
         user=user
