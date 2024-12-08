@@ -27,36 +27,39 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 @app.route('/')
 def index():
     message = get_flashed_messages()
-    input_data = {'url': ''}
+    input_data = request.args.get('url', '')
     return render_template('index.html',
                            input_data=input_data,
                            message=message)
 
 
-@app.post('/')
+@app.post('/urls')
 def url_post():
     input_data = request.form.to_dict()
     if validators.url(input_data) is not True:
-        flash('Некорректный URL')
+        message = 'Некорректный URL'
         return render_template(
             'index.html',
-            input_data=input_data), 422
+            input_data=input_data,
+            message=message
+            ), 422
     flash('Страница успешно добавлена')
     return redirect(url_for('show_url'), code=302)
-
-
-
-@app.route('/urls/<id>')
-def show_url():
-    message = get_flashed_messages()
-    return render_template(
-        'show.html',
-        message=message
-    )
 
 
 @app.route('/urls')
 def urls_get():
     return render_template(
         'urls.html'
+    )
+
+
+@app.route('/urls/<id>')
+def show_url():
+    #подключаемся к базе
+    #находим пользователя по айди
+    user = ''
+    return render_template(
+        'show.html',
+        user=user
     )

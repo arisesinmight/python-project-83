@@ -1,10 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <h1>Сайт: url.name</h1>
+    <div>
+        <table>
+            <tr>
+                <td>ID</td>
+                <td>url.id</td>
+            </tr>
+            <tr>
+                <td>Имя</td>
+                <td>url.name</td>
+            </tr>
+            <tr>
+                <td>Дата создания</td>
+                <td>url.created_at</td>
+            </tr>
+        </table>
+    </div>
+    <h2>Проверки</h2>
+    <p>Кнопка проверки</p>
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Код ответа</th>
+                <th>h1</th>
+                <th>title</th>
+                <th>description</th>
+                <th>Дата создания</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>url.id</td>
+                <td>код ответа</td>
+                <td>h1</td>
+                <td>заголовок сайта</td>
+                <td>описание</td>
+                <td>url.created_at</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
