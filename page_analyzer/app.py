@@ -1,28 +1,21 @@
 import os
-
-import psycopg2
-
-from dotenv import load_dotenv
-
-from flask import (
-    get_flashed_messages,
-    flash,
-    Flask,
-    redirect,
-    render_template,
-    request,
-    url_for
-)
-
-import validators
-
 from urllib.parse import urlparse
 
+import validators
+from dotenv import load_dotenv
+from flask import (Flask, flash, get_flashed_messages, redirect,
+                   render_template, request, url_for)
+
+from urls_repository import UrlsRepository
+
 load_dotenv()
-DATABASE_URL = os.getenv('DATABASE_URL')
-conn = psycopg2.connect(DATABASE_URL)
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
+
+
+repo = UrlsRepository(app.config['DATABASE_URL'])
 
 
 @app.route('/')
@@ -44,26 +37,33 @@ def url_post():
             input_data=input_data,
             message=message
             ), 422
-    #номализуем урл
-    #подключаемся к базе
-    #сохраняем урл в базе
-    #id = находим айди
-    flash('Страница успешно добавлена')
-    return redirect(url_for('show_url', id=id), code=302)
+    parsed_url = urlparse(input_data['url'])
+    norm_url = parsed_url._replace(
+        path="", params="", query="", fragment=""
+    ).geturl()
+    url_id = repo.get_id(norm_url)
+    if url_id:
+        flash('Страница уже существует')
+        return redirect(url_for('show_url', url_id=url_id))
+    else:
+        repo.save(norm_url)
+        flash('Страница успешно добавлена')
+        return redirect(url_for('show_url', url_id=url_id), code=302)
 
 
 @app.route('/urls')
 def urls_get():
+    urls = repo.get_content()
     return render_template(
-        'urls.html'
+        'urls.html',
+        urls=urls
     )
 
 
-@app.route('/urls/1') #айди 1 так как нет пока модели
-def show_url(id):
-    #подключаемся к базе
-    user = '' #находим пользователя по айди
+@app.route('/urls/<id>')
+def show_url(url_id):
+    url = repo.find(url_id)
     return render_template(
         'show.html',
-        user=user
+        url=url
     )

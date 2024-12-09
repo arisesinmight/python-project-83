@@ -18,6 +18,8 @@ gunicorn = "^23.0.0"
 python-dotenv = "^1.0.1"
 validators = "^0.34.0"
 psycopg2-binary = "^2.9.10"
+isort = "^5.13.2"
+datetime = "^5.5"
 
 
 [build-system]
