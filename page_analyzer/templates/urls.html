@@ -3,7 +3,7 @@
 <div>
     <h1>Сайты</h1>
     <div>
-        <table>
+        <table data-test="urls">
             <thead>
             <tr>
                 <th>ID</th>
@@ -13,14 +13,14 @@
             </tr>
             </thead>
             <tbody>
+            {% for url in urls %}
             <tr>
-                {% for url in urls %}
-                <td>url.id</td>
-                <td>url.name</td>
-                <td>url.created_at</td>
-                <td>код ответа из реквеста?</td>
-                {% endfor %}
+                <td>{{ url.id }}</td>
+                <td>{{ url.name }}</td>
+                <td>{{ url.created_at }}</td>
+                <td>код ответа проверки?</td>
             </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>

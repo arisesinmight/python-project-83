@@ -36,5 +36,5 @@ class UrlsRepository:
     def get_content(self):
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                cur.execute("SELECT * FROM urls")
+                cur.execute("SELECT * FROM urls ORDER BY id DESC")
                 return cur.fetchall()
