@@ -2,4 +2,4 @@
 page_analyzer/__pycache__/
 *.pyc
 .env
-.idea
+.idea/
