@@ -27,7 +27,7 @@ class UrlsRepository:
         with self.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    "INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id",
+                    "INSERT INTO urls (name, created_at) VALUES (%s, %s)",
                     (url, date.today())
                 )
         conn.commit()
