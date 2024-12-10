@@ -44,11 +44,12 @@ def url_post():
     url_id = repo.get_id(norm_url)
     if url_id:
         flash('Страница уже существует')
-        return redirect(url_for('show_url', url_id=url_id))
+        return redirect(url_for('show_url', id=url_id[0]))
     else:
         repo.save(norm_url)
         flash('Страница успешно добавлена')
-        return redirect(url_for('show_url', url_id=url_id), code=302)
+        url_id = repo.get_id(norm_url)
+        return redirect(url_for('show_url', id=url_id[0]), code=302)
 
 
 @app.route('/urls')
@@ -60,9 +61,9 @@ def urls_get():
     )
 
 
-@app.route('/urls/<id>')
-def show_url(url_id):
-    url = repo.find(url_id)
+@app.route('/urls/<int:id>')
+def show_url(id):
+    url = repo.find(id)
     return render_template(
         'show.html',
         url=url

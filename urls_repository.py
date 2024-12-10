@@ -1,6 +1,7 @@
 import psycopg2
-from psycopg2.extras import RealDictCursor
 from datetime import date
+from psycopg2.extras import RealDictCursor
+
 
 
 class UrlsRepository:
@@ -22,12 +23,12 @@ class UrlsRepository:
                 cur.execute("SELECT id FROM urls WHERE name = %s", (name,))
                 return cur.fetchone()
 
-    def save(self, name):
+    def save(self, url):
         with self.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    "INSERT INTO urls (name, created_at) VALUES (%s, %s)",
-                    (name, date.today())
+                    "INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id",
+                    (url, date.today())
                 )
         conn.commit()
         return
