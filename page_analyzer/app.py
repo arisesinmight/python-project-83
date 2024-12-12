@@ -31,11 +31,11 @@ def index():
 def url_post():
     input_data = request.form.to_dict()
     if validators.url(input_data['url']) is not True:
-        message = 'Некорректный URL'
+        error = 'Некорректный URL'
         return render_template(
             'index.html',
             input_data=input_data,
-            message=message
+            error=error
             ), 422
     parsed_url = urlparse(input_data['url'])
     norm_url = parsed_url._replace(
@@ -54,7 +54,7 @@ def url_post():
 
 @app.route('/urls')
 def urls_get():
-    urls = repo.get_content()
+    urls = repo.get_full_data()
     return render_template(
         'urls.html',
         urls=urls
@@ -63,17 +63,19 @@ def urls_get():
 
 @app.route('/urls/<int:id>')
 def show_url(id):
+    message = get_flashed_messages()
     url = repo.find(id)
+    checks_result = repo.get_check_result(url)
     return render_template(
         'show.html',
-        url=url
+        url=url,
+        checks_result=checks_result,
+        message=message
     )
 
 
 @app.post('/urls/<int:id>/checks')
 def check_url(id):
     url = repo.find(id)
-    return render_template(
-        'show.html',
-        url=url
-    )
+    repo.check(url)
+    return redirect(url_for('show_url', id=id))

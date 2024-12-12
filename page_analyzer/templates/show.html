@@ -25,7 +25,9 @@
         </table>
     </div>
     <h2>Проверки</h2>
-    <p>Кнопка проверки</p>
+    <form method="post"  action="/urls/{{ url.id }}/checks">
+        <input type="submit" class="btn btn-primary" value="Запустить проверку">
+    </form>
     <div>
         <table data-test="checks">
             <thead>
@@ -39,14 +41,16 @@
             </tr>
             </thead>
             <tbody>
+            {% for check in checks_result %}
             <tr>
-                <td>urlid?</td>
+                <td>{{ check.id }}</td>
                 <td>status_code</td>
                 <td>h1</td>
                 <td>заголовок сайта</td>
                 <td>описание</td>
-                <td>urlcreated_at</td>
+                <td>{{ check.created_at }}</td>
             </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
