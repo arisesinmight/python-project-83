@@ -20,6 +20,8 @@ validators = "^0.34.0"
 psycopg2-binary = "^2.9.10"
 isort = "^5.13.2"
 datetime = "^5.5"
+psycopg-pool = "^3.2.4"
+psycopg = {extras = ["pool"], version = "^3.2.3"}
 
 
 [build-system]

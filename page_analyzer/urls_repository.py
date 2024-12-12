@@ -1,6 +1,7 @@
 import psycopg2
 from datetime import date
 from psycopg2.extras import RealDictCursor
+from contextlib import closing
 
 
 
@@ -9,7 +10,7 @@ class UrlsRepository:
         self.db_url = db_url
 
     def get_connection(self):
-        return psycopg2.connect(self.db_url)
+        return closing(psycopg2.connect(self.db_url))
 
     def find(self, id):
         with self.get_connection() as conn:

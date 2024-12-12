@@ -1,4 +1,6 @@
 .venv/
-
+page_analyzer/__pycache__
 *.pyc
 .env
+.idea
+**/__pycache__

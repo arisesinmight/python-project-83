@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from flask import (Flask, flash, get_flashed_messages, redirect,
                    render_template, request, url_for)
 
-from urls_repository import UrlsRepository
+from page_analyzer.urls_repository import UrlsRepository
 
 load_dotenv()
 
@@ -63,6 +63,15 @@ def urls_get():
 
 @app.route('/urls/<int:id>')
 def show_url(id):
+    url = repo.find(id)
+    return render_template(
+        'show.html',
+        url=url
+    )
+
+
+@app.post('/urls/<int:id>/checks')
+def check_url(id):
     url = repo.find(id)
     return render_template(
         'show.html',

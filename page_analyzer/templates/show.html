@@ -1,5 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
+
+{% if message %}
+<div>{{ message }}</div>
+{% endif %}
+
+<main>
 <div>
     <h1>Сайт: {{ url.name }}</h1>
     <div>
@@ -21,7 +27,7 @@
     <h2>Проверки</h2>
     <p>Кнопка проверки</p>
     <div>
-        <table>
+        <table data-test="checks">
             <thead>
             <tr>
                 <th>ID</th>
@@ -34,8 +40,8 @@
             </thead>
             <tbody>
             <tr>
-                <td>urlid</td>
-                <td>код ответа</td>
+                <td>urlid?</td>
+                <td>status_code</td>
                 <td>h1</td>
                 <td>заголовок сайта</td>
                 <td>описание</td>
@@ -45,4 +51,5 @@
         </table>
     </div>
 </div>
+</main>
 {% endblock %}

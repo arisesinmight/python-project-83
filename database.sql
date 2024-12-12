@@ -4,10 +4,10 @@ CREATE TABLE IF NOT EXISTS urls (
     created_at DATE
 );
 
-CREATE TABLE IF NOT EXISTS checks (
+CREATE TABLE IF NOT EXISTS url_checks (
     check_id int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     url_id int REFERENCES urls(id)
-    response_code int,
+    status_code int,
     h1 VARCHAR(255)
     title VARCHAR(255),
     description VARCHAR(255),
