@@ -41,10 +41,10 @@
             </tr>
             </thead>
             <tbody>
-            {% for check in checks_result %}
+            {% for check in check_results %}
             <tr>
                 <td>{{ check.id }}</td>
-                <td>status_code</td>
+                <td>{{ check.status_code }}</td>
                 <td>h1</td>
                 <td>заголовок сайта</td>
                 <td>описание</td>

@@ -64,18 +64,27 @@ def urls_get():
 @app.route('/urls/<int:id>')
 def show_url(id):
     message = get_flashed_messages()
-    url = repo.find(id)
-    checks_result = repo.get_check_result(url)
+    url= repo.find_by(id)
+    check_results = repo.get_check_results(url)
     return render_template(
         'show.html',
         url=url,
-        checks_result=checks_result,
+        check_results=check_results,
         message=message
     )
 
 
 @app.post('/urls/<int:id>/checks')
 def check_url(id):
-    url = repo.find(id)
-    repo.check(url)
+    url = repo.find_by(id)
+    if repo.check_status(url) is not True:
+        message = 'Произошла ошибка при проверке'
+        return render_template(
+        'show.html',
+            url=url,
+            check_results={},
+            message=message
+        ), 422
+    repo.add_check(url)
+    flash('Страница успешно проверена')
     return redirect(url_for('show_url', id=id))
