@@ -3,6 +3,28 @@ from datetime import date
 from psycopg2.extras import RealDictCursor
 from contextlib import closing
 import requests
+from bs4 import BeautifulSoup
+
+
+def get_(url, content):
+    response = requests.get(url['name'])
+    html_body = response.text
+    soup = BeautifulSoup(html_body, 'html.parser')
+    if content == 'status_code':
+        return response.status_code
+    if content == 'h1':
+        if soup.h1:
+            return soup.h1.string
+    if content == 'title':
+        if soup.title:
+            return soup.title.string
+    if content == 'description':
+        meta = soup.select('meta[name="description"]')
+        for row in meta:
+            desc = row.get('content')
+            if desc:
+                return desc
+    return None
 
 
 class UrlsRepository:
@@ -40,7 +62,7 @@ class UrlsRepository:
                 cur.execute("SELECT * FROM urls ORDER BY id DESC")
                 return cur.fetchall()
 
-    def get_full_data(self):
+    def get_summary_data(self):
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(
@@ -49,7 +71,8 @@ class UrlsRepository:
                     url_checks.created_at as last_check\
                     FROM urls\
                     LEFT JOIN url_checks ON urls.id = url_checks.url_id\
-                    GROUP BY urls.id, url_checks.status_code, url_checks.created_at\
+                    GROUP BY urls.id,\
+                    url_checks.status_code, url_checks.created_at\
                     ORDER BY urls.id DESC;"
                 )
                 return cur.fetchall()
@@ -63,14 +86,19 @@ class UrlsRepository:
             return False
         return True
 
-    def add_check(self, url):
-        status_code = requests.get(url['name']).status_code
+    def make_check(self, url):
         with self.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    "INSERT INTO url_checks (url_id, status_code, created_at)\
-                    VALUES (%s, %s, %s)",
-                    (url['id'], status_code, date.today())
+                    "INSERT INTO url_checks (\
+                    url_id, status_code, h1, title, description, created_at)\
+                    VALUES (%s, %s, %s, %s, %s, %s)",
+                    (url['id'],
+                     get_(url, 'status_code'),
+                     get_(url, 'h1'),
+                     get_(url, 'title'),
+                     get_(url, 'description'),
+                     date.today())
                 )
             conn.commit()
         return
@@ -79,7 +107,9 @@ class UrlsRepository:
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(
-                    "SELECT id, url_id, status_code, created_at FROM url_checks\
+                    "SELECT id, url_id, status_code,\
+                    h1, title, description, created_at\
+                    FROM url_checks\
                     WHERE url_id = %s ORDER BY id DESC",
                     (url['id'],)
                 )

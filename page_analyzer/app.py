@@ -54,7 +54,7 @@ def url_post():
 
 @app.route('/urls')
 def urls_get():
-    urls = repo.get_full_data()
+    urls = repo.get_summary_data()
     return render_template(
         'urls.html',
         urls=urls
@@ -64,7 +64,7 @@ def urls_get():
 @app.route('/urls/<int:id>')
 def show_url(id):
     message = get_flashed_messages()
-    url= repo.find_by(id)
+    url = repo.find_by(id)
     check_results = repo.get_check_results(url)
     return render_template(
         'show.html',
@@ -80,11 +80,11 @@ def check_url(id):
     if repo.check_status(url) is not True:
         message = 'Произошла ошибка при проверке'
         return render_template(
-        'show.html',
+            'show.html',
             url=url,
             check_results={},
             message=message
         ), 422
-    repo.add_check(url)
+    repo.make_check(url)
     flash('Страница успешно проверена')
     return redirect(url_for('show_url', id=id))

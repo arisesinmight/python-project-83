@@ -23,6 +23,7 @@ datetime = "^5.5"
 psycopg-pool = "^3.2.4"
 psycopg = {extras = ["pool"], version = "^3.2.3"}
 requests = "^2.32.3"
+bs4 = "^0.0.2"
 
 
 [build-system]
