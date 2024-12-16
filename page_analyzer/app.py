@@ -31,11 +31,11 @@ def index():
 def url_post():
     input_data = request.form.to_dict()
     if validators.url(input_data['url']) is not True:
-        error = 'Некорректный URL'
+        message = 'Некорректный URL'
         return render_template(
             'index.html',
             input_data=input_data,
-            error=error
+            message=message
             ), 422
     parsed_url = urlparse(input_data['url'])
     norm_url = parsed_url._replace(
@@ -43,11 +43,11 @@ def url_post():
     ).geturl()
     url_id = repo.get_id(norm_url)
     if url_id:
-        flash('Страница уже существует')
+        flash('Страница уже существует', 'info')
         return redirect(url_for('show_url', id=url_id[0]))
     else:
         repo.save(norm_url)
-        flash('Страница успешно добавлена')
+        flash('Страница успешно добавлена', 'success')
         url_id = repo.get_id(norm_url)
         return redirect(url_for('show_url', id=url_id[0]), code=302)
 
@@ -78,7 +78,7 @@ def show_url(id):
 def check_url(id):
     url = repo.find_by(id)
     if repo.check_status(url) is not True:
-        message = 'Произошла ошибка при проверке'
+        message = 'Произошла ошибка при проверке', 'error'
         return render_template(
             'show.html',
             url=url,

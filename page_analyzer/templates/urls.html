@@ -1,15 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
-
-{% if message %}
-<div>{{ message }}</div>
-{% endif %}
-
-<main>
-<div>
+<main class="flex-grow-1">
+<div class="container-lg mt3">
     <h1>Сайты</h1>
-    <div>
-        <table data-test="urls">
+    <div class="table=responsive">
+        <table class="table table-bordered table-hover text-nowrap" data-test="urls">
             <thead>
             <tr>
                 <th>ID</th>

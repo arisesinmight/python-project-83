@@ -1,20 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
 
-{% if error %}
-<div>{{ error }}</div>
+{% if message %}
+<div class="alert alert-danger" role="alert">{{ message }}</div>
 {% endif %}
 
-<main>
-<div class="container">
+<main class="flex-grow-1">
+<div class="container-lg mt-3">
+  <h1></h1>
   <div class="row">
-    <div class="col-12 border rounded-3">
-      <h1>Анализатор страниц {{ validate }}</h1>
-      <p>Бесплатно проверяйте сайты на SEO-пригодность</p>
-      <form action="{{ url_for('url_post') }}" method="POST">
+    <div class="col-12 col-md-10 col-lg-8 mx-auto border rounded-3 bg-light p-5">
+      <h1 class="display-3">Анализатор страниц {{ validate }}</h1>
+      <p class="lead">Бесплатно проверяйте сайты на SEO-пригодность</p>
+      <form action="{{ url_for('url_post') }}" method="POST" class="d-flex jistify-content-center">
         <label for="text" class="visually-hidden">URL для проверки</label>
-        <input type="url" name="url" value="{{ input_data.url }}" placeholder="https://www.example.com" required>
-        <input type="submit" value="Проверить">
+        <input type="url" name="url" value="{{ input_data.url }}" placeholder="https://www.example.com" class="form-control form-control-lg" required>
+        <input type="submit" class="btn btn-primary btn-lg ms-3 px-5 text-uppercase mx-3" value="Проверить">
       </form>
     </div>
   </div>
