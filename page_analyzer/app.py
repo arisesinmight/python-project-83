@@ -63,7 +63,7 @@ def urls_get():
 
 @app.route('/urls/<int:id>')
 def show_url(id):
-    message = get_flashed_messages()
+    message = get_flashed_messages(with_categories=True)
     url = repo.find_by(id)
     check_results = repo.get_check_results(url)
     return render_template(
@@ -86,5 +86,5 @@ def check_url(id):
             message=message
         ), 422
     repo.make_check(url)
-    flash('Страница успешно проверена')
+    flash('Страница успешно проверена', "success")
     return redirect(url_for('show_url', id=id))

@@ -1,15 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
 
-{% if message[1] = 'error' %}
+{% if message[1] == 'error' %}
 <div class="alert alert-danger" role="alert">{{ message[0] }}</div>
+{% else %}
+{% for category, content in message %}
+{% if category == 'success' %}
+<div class="alert alert-success" role="alert">{{ content }}</div>
+{% elif category == 'info' %}
+<div class="alert alert-info" role="alert">{{ content }}</div>
 {% endif %}
-{% if message.category = 'success' %}
-<div class="alert alert-success" role="alert">{{ message.message }}</div>
-{% endif %}
-{% if message.category = 'info' %}
-<div class="alert alert-info" role="alert">{{ message.message }}</div>
-{% endif %}
+{% endfor %}
+{% endif  %}
 
 <main class="flex-grow-1">
 <div class="container-lg mt-3">
