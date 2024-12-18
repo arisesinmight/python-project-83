@@ -83,7 +83,8 @@ class UrlsRepository:
         try:
             response = requests.get(url['name'])
             response.raise_for_status()
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.HTTPError):
             return
         return True
 
