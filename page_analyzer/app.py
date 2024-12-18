@@ -3,8 +3,15 @@ from urllib.parse import urlparse
 
 import validators
 from dotenv import load_dotenv
-from flask import (Flask, flash, get_flashed_messages, redirect,
-                   render_template, request, url_for)
+from flask import (
+    Flask,
+    flash,
+    get_flashed_messages,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 
 from page_analyzer.urls_repository import UrlsRepository
 
