@@ -1,9 +1,10 @@
-import psycopg2
-from datetime import date
-from psycopg2.extras import RealDictCursor
 from contextlib import closing
+from datetime import date
+
+import psycopg2
 import requests
 from bs4 import BeautifulSoup
+from psycopg2.extras import RealDictCursor
 
 
 def get_(url, content):
