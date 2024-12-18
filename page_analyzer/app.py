@@ -77,7 +77,7 @@ def show_url(id):
 @app.post('/urls/<int:id>/checks')
 def check_url(id):
     url = repo.find_by(id)
-    if repo.check_status(url) is not True:
+    if not repo.check_status(url):
         message = 'Произошла ошибка при проверке', 'error'
         return render_template(
             'show.html',

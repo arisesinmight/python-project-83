@@ -84,7 +84,7 @@ class UrlsRepository:
             response = requests.get(url['name'])
             response.raise_for_status()
         except requests.exceptions.ConnectionError:
-            return False
+            return
         return True
 
     def make_check(self, url):
